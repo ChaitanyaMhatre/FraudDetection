@@ -1,0 +1,319 @@
+# 🛡️ AI-Powered Fraud Detection System
+
+An enterprise-style Fraud Detection System that uses Artificial Intelligence and Machine Learning to detect fraudulent transactions in real time.
+
+## 🚀 Features
+
+- AI-Based Fraud Detection
+- Behavioral Analysis
+- Risk Scoring
+- Real-Time Transaction Monitoring
+- Admin Dashboard
+- User Dashboard
+- Email OTP Verification
+- Fraud Alerts
+- Transaction Analytics
+- PostgreSQL Database Integration
+
+---
+
+# 🏗️ Tech Stack
+
+## Frontend
+- Angular
+- TypeScript
+- Chart.js
+
+## Backend
+- Spring Boot
+- Spring Data JPA
+- WebSocket
+- Java Mail Sender
+
+## Database
+- PostgreSQL
+
+## AI / Machine Learning
+- Python
+- Flask
+- Scikit-Learn
+- Joblib
+
+---
+
+# 📁 Project Structure
+
+```text
+fraud-detection/
+│
+├── fraud-frontend/        # Angular Frontend
+│
+├── fraud-detection/       # Spring Boot Backend
+│
+└── fraud-ml/             # Flask AI Service
+```
+
+---
+
+# ⚙️ Prerequisites
+
+Install the following before running the project:
+
+- Java 21+
+- Maven
+- PostgreSQL
+- Node.js
+- Angular CLI
+- Python 3.11+
+
+---
+
+# 🗄️ Database Setup
+
+Create PostgreSQL database:
+
+```sql
+CREATE DATABASE frauddb;
+```
+
+Update database credentials inside:
+
+```text
+src/main/resources/application.properties
+```
+
+Example:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/frauddb
+spring.datasource.username=postgres
+spring.datasource.password=YOUR_PASSWORD
+```
+
+---
+
+# 🤖 AI Service Setup (Flask)
+
+Navigate to AI folder:
+
+```bash
+cd fraud-ml
+```
+
+Create virtual environment:
+
+### Windows
+
+```bash
+python -m venv venv
+```
+
+Activate environment:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install pandas scikit-learn flask joblib  
+```
+
+Run Flask server:
+
+```bash
+python app.py
+```
+
+AI Service starts on:
+
+```text
+http://localhost:5000
+```
+
+---
+
+# ☕ Backend Setup (Spring Boot)
+
+Navigate to backend folder:
+
+```bash
+cd fraud-detection
+```
+
+Install dependencies:
+
+```bash
+mvn clean install
+```
+
+Run application:
+
+```bash
+mvn spring-boot:run
+```
+
+Backend starts on:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# 🌐 Frontend Setup (Angular)
+
+Navigate to frontend folder:
+
+```bash
+cd fraud-frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run Angular application:
+
+```bash
+ng serve
+```
+
+Frontend starts on:
+
+```text
+http://localhost:4200
+```
+
+---
+
+# 📧 Email OTP Configuration
+
+Enable:
+
+- Google 2-Step Verification
+- Google App Password
+
+Add the following in:
+
+```text
+application.properties
+```
+
+```properties
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+
+spring.mail.username=YOUR_GMAIL@gmail.com
+spring.mail.password=YOUR_APP_PASSWORD
+
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
+---
+
+# ▶️ Running the Complete System
+
+Start the services in the following order:
+
+### 1️⃣ PostgreSQL
+
+Make sure PostgreSQL service is running.
+
+### 2️⃣ Flask AI Service
+
+```bash
+python app.py
+```
+
+### 3️⃣ Spring Boot Backend
+
+```bash
+mvn spring-boot:run
+```
+
+### 4️⃣ Angular Frontend
+
+```bash
+ng serve
+```
+
+---
+
+# 🔗 Application URLs
+
+| Service | URL |
+|----------|------|
+| Frontend | http://localhost:4200 |
+| Backend | http://localhost:8080 |
+| AI Service | http://localhost:5000 |
+
+---
+
+# 📊 Fraud Detection Workflow
+
+```text
+User Initiates Transaction
+            ↓
+AI Fraud Analysis
+            ↓
+ ┌───────────────────┐
+ │ Safe Transaction  │
+ └───────────────────┘
+            ↓
+         SUCCESS
+
+            OR
+
+ ┌───────────────────┐
+ │ Suspicious        │
+ └───────────────────┘
+            ↓
+      Email OTP
+            ↓
+      OTP Verify
+            ↓
+         SUCCESS
+
+            OR
+
+ ┌───────────────────┐
+ │ Fraud Detected    │
+ └───────────────────┘
+            ↓
+         BLOCKED
+```
+
+---
+
+# 🚀 Future Enhancements
+
+- JWT Authentication
+- SMS OTP Verification
+- Device Fingerprinting
+- User Behavioral Profiling
+- Location Intelligence
+- Docker Support
+- Cloud Deployment
+- Advanced Anomaly Detection
+
+---
+
+# 👨‍💻 Author
+
+AI-Powered Fraud Detection System
+
+
+## Demo Credentials
+
+Admin:
+Username: admin
+Password: admin123
+
+User:
+Username: user
+Password: user123
