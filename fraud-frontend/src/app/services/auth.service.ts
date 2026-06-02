@@ -6,7 +6,7 @@ from '@angular/core';
 })
 export class AuthService {
 
-  // ✅ LOGIN
+  // ✅ LOGIN page
   login(
     username: string,
     password: string
