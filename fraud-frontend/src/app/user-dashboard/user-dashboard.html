@@ -1,0 +1,41 @@
+<p>user-dashboard works!</p>
+<div class="user-dashboard">
+
+  <h2>
+    💸 Send Money
+  </h2>
+
+  <input
+    type="number"
+    placeholder="Sender ID"
+    [(ngModel)]="senderId"
+  />
+
+  <input
+    type="number"
+    placeholder="Receiver ID"
+    [(ngModel)]="receiverId"
+  />
+
+  <input
+    type="number"
+    placeholder="Amount"
+    [(ngModel)]="amount"
+  />
+
+  <button
+    (click)="sendMoney()">
+
+    Send Money
+
+  </button>
+
+  <div *ngIf="message">
+
+    <h3>
+      {{ message }}
+    </h3>
+
+  </div>
+
+</div>

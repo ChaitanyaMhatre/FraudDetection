@@ -1,0 +1,61 @@
+<!-- 🔐 LOGIN -->
+<div *ngIf="!authService.isLoggedIn()">
+
+  <app-login></app-login>
+
+</div>
+
+<!-- 🛡 ADMIN DASHBOARD -->
+<div
+  *ngIf="
+    authService.isLoggedIn()
+    &&
+    authService.getRole() === 'ADMIN'
+  ">
+
+  <h1 style="text-align:center;">
+
+    🛡 Admin Fraud Dashboard
+
+  </h1>
+
+  <button
+    (click)="logout()">
+
+    Logout
+
+  </button>
+
+  <app-alerts></app-alerts>
+
+  <app-transactions></app-transactions>
+
+  <app-charts></app-charts>
+
+</div>
+
+<!-- 👤 USER DASHBOARD -->
+<div
+  *ngIf="
+    authService.isLoggedIn()
+    &&
+    authService.getRole() === 'USER'
+  ">
+
+  <h1 style="text-align:center;">
+
+    👤 User Dashboard
+
+  </h1>
+
+  <button
+    (click)="logout()">
+
+    Logout
+
+  </button>
+
+  <app-user-dashboard>
+  </app-user-dashboard>
+
+</div>

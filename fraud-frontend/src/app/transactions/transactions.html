@@ -1,0 +1,117 @@
+<div class="transactions-container">
+
+  <h2>💳 Transactions Dashboard</h2>
+
+  <!-- 📊 Stats Cards -->
+  <div class="stats-container">
+
+    <div class="card total">
+      <h3>Total</h3>
+      <p>{{ total }}</p>
+    </div>
+
+    <div class="card success">
+      <h3>Success</h3>
+      <p>{{ success }}</p>
+    </div>
+
+    <div class="card suspicious">
+      <h3>Suspicious</h3>
+      <p>{{ suspicious }}</p>
+    </div>
+
+    <div class="card blocked">
+      <h3>Blocked</h3>
+      <p>{{ blocked }}</p>
+    </div>
+
+  </div>
+
+  <!-- 📥 Export Button -->
+  <button
+    class="export-btn"
+    (click)="exportToExcel()">
+
+    📥 Export to Excel
+
+  </button>
+
+  <!-- 📋 Transactions Table -->
+  <table>
+
+    <thead>
+
+    <tr>
+
+      <th>ID</th>
+
+      <th>Sender</th>
+
+      <th>Receiver</th>
+
+      <th>Amount</th>
+
+      <th>Status</th>
+
+      <th>Timestamp</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr
+      *ngFor="
+      let transaction
+      of transactions
+    ">
+
+      <td>
+        {{ transaction.id }}
+      </td>
+
+      <td>
+        {{ transaction.senderId }}
+      </td>
+
+      <td>
+        {{ transaction.receiverId }}
+      </td>
+
+      <td>
+        ₹{{ transaction.amount }}
+      </td>
+
+      <td>
+
+      <span
+        [class.success-badge]="
+          transaction.status === 'SUCCESS'
+        "
+
+        [class.blocked-badge]="
+          transaction.status === 'BLOCKED'
+        "
+
+        [class.suspicious-badge]="
+          transaction.status === 'SUSPICIOUS'
+        ">
+
+        {{ transaction.status }}
+
+      </span>
+
+      </td>
+
+      <td>
+        {{ transaction.timestamp }}
+      </td>
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

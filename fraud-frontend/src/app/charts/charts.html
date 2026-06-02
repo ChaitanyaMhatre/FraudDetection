@@ -1,0 +1,43 @@
+<div class="analytics-container">
+
+  <h2>📊 Analytics</h2>
+
+  <div class="charts-grid">
+
+    <!-- 🥧 Pie Chart -->
+    <div class="chart-card">
+
+      <h3>Status Distribution</h3>
+
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [type]="pieChartType"
+        [options]="{
+          responsive: true,
+          maintainAspectRatio: false
+        }">
+      </canvas>
+
+    </div>
+
+    <!-- 📊 Bar Chart -->
+    <div class="chart-card">
+
+      <h3>Transactions Over Time</h3>
+
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [type]="barChartType"
+        [options]="{
+          responsive: true,
+          maintainAspectRatio: false
+        }">
+      </canvas>
+
+    </div>
+
+  </div>
+
+</div>
