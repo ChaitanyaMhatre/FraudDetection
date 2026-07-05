@@ -11,24 +11,30 @@
     authService.isLoggedIn()
     &&
     authService.getRole() === 'ADMIN'
-  ">
+  "
+  class="admin-container">
 
-  <h1 style="text-align:center;">
+  <header class="admin-header">
+    <div class="admin-title-group">
+      <span class="material-icons logo-icon" style="color: var(--gpay-blue); font-size: 32px;">shield</span>
+      <h1>Admin Fraud Dashboard</h1>
+    </div>
+    <div class="admin-header-actions">
+      <button class="premium-button premium-button-secondary" (click)="logout()">
+        <span class="material-icons">logout</span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </header>
 
-    🛡 Admin Fraud Dashboard
-
-  </h1>
-
-  <button
-    (click)="logout()">
-
-    Logout
-
-  </button>
-
-  <app-map></app-map>
-
-  <app-alerts></app-alerts>
+  <div class="admin-dashboard-grid">
+    <div class="grid-left-col">
+      <app-map></app-map>
+    </div>
+    <div class="grid-right-col">
+      <app-alerts></app-alerts>
+    </div>
+  </div>
 
   <app-transactions></app-transactions>
 

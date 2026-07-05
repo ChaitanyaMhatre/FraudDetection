@@ -5,19 +5,33 @@
   --gpay-blue-light: #e8f0fe;
   --gpay-green: #0f9d58;
   --gpay-green-light: #e6f4ea;
-  --gpay-red: #d93025;
+  --gpay-red: #ea4335;
   --gpay-red-light: #fce8e6;
   --gpay-yellow: #f4b400;
   --gpay-yellow-light: #fef7e0;
   
   --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
   --bg-card: #ffffff;
   --text-dark: #1e293b;
   --text-light: #64748b;
-  --border-color: #dadce0;
+  --text-lightest: #94a3b8;
+  --border-color: #cbd5e1;
+  --border-light: #e2e8f0;
   
   --font-title: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
+
+  /* Card and Spacing Radii */
+  --radius-outer: 28px;
+  --radius-card: 24px;
+  --radius-inner: 12px;
+  --radius-pill: 9999px;
+  
+  /* Shared Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 * {
@@ -81,4 +95,99 @@ h1, h2, h3, h4, h5, h6 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* 🏢 Enterprise Design System - Shared Utilities */
+.premium-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.premium-button {
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: var(--radius-inner);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.premium-button-primary {
+  background-color: var(--gpay-blue);
+  color: white;
+}
+
+.premium-button-primary:hover {
+  background-color: var(--gpay-blue-hover);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+}
+
+.premium-button-secondary {
+  background-color: var(--gpay-blue-light);
+  color: var(--gpay-blue);
+}
+
+.premium-button-secondary:hover {
+  background-color: #d2e3fc;
+}
+
+.premium-input {
+  font-family: var(--font-body);
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-inner);
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  color: var(--text-dark);
+  background-color: var(--bg-primary);
+  transition: all 0.2s ease;
+}
+
+.premium-input:focus {
+  outline: none;
+  border-color: var(--gpay-blue);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+}
+
+/* Status Badges */
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+}
+
+.premium-badge-success {
+  background: var(--gpay-green-light);
+  color: var(--gpay-green);
+}
+
+.premium-badge-suspicious {
+  background: var(--gpay-yellow-light);
+  color: #b06000;
+}
+
+.premium-badge-blocked {
+  background: var(--gpay-red-light);
+  color: var(--gpay-red);
 }

@@ -1,5 +1,20 @@
-<h2>🚨 Fraud Alerts</h2>
-
-<div *ngFor="let alert of alerts" class="alert-box">
-  {{ alert }}
+<div class="premium-card alerts-card">
+  <div class="card-header">
+    <span class="material-icons card-icon">notifications_active</span>
+    <h2>Live Fraud Feed</h2>
+  </div>
+  
+  <div class="alerts-list">
+    <div *ngFor="let alert of alerts" class="alert-item">
+      <div class="alert-indicator danger"></div>
+      <div class="alert-content">
+        <p class="alert-message">{{ alert }}</p>
+      </div>
+    </div>
+    
+    <div *ngIf="alerts.length === 0" class="empty-alerts">
+      <span class="material-icons empty-icon">notifications_none</span>
+      <p>Listening for real-time transactions...</p>
+    </div>
+  </div>
 </div>
