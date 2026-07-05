@@ -26,7 +26,16 @@ export class AlertsComponent implements OnInit {
 
       // 🔥 Force Angular UI update
       this.zone.run(() => {
-        this.alerts = [msg, ...this.alerts];   // create new array (important)
+        let displayMsg = msg;
+        try {
+          const parsed = JSON.parse(msg);
+          if (parsed && parsed.message) {
+            displayMsg = parsed.message;
+          }
+        } catch (e) {
+          // Fallback to raw message if it's not JSON
+        }
+        this.alerts = [displayMsg, ...this.alerts];   // create new array (important)
         this.cd.detectChanges();              // force refresh
       });
     });

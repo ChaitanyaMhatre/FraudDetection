@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 import {
   Chart,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
+  registerables
 } from 'chart.js';
 
 import {
@@ -24,16 +19,8 @@ import {
 import { TransactionService }
 from '../services/transaction.service';
 
-// ✅ REGISTER CHART.JS MODULES
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// ✅ REGISTER ALL CHART.JS MODULES (including Controllers)
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-charts',
@@ -45,10 +32,11 @@ Chart.register(
   templateUrl: './charts.html',
   styleUrls: ['./charts.css']
 })
-export class ChartsComponent
-implements OnInit {
+export class ChartsComponent implements OnInit, OnDestroy {
 
   transactions: any[] = [];
+  private sub: Subscription | null = null;
+  private lastDataHash = '';
 
   // 🥧 PIE CHART
   pieChartType: ChartType = 'pie';
@@ -76,81 +64,70 @@ implements OnInit {
   };
 
   constructor(
-    private transactionService:
-    TransactionService
+    private transactionService: TransactionService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-
-    this.loadCharts();
+    this.sub = this.transactionService.transactions$.subscribe({
+      next: (data) => {
+        this.updateCharts(data);
+      }
+    });
   }
 
-  async loadCharts() {
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
 
-    const data =
-      await this.transactionService
-      .getAllTransactions();
+  updateCharts(data: any[]) {
+    try {
+      const dataStr = JSON.stringify(data || []);
+      if (dataStr === this.lastDataHash) {
+        return;
+      }
+      this.lastDataHash = dataStr;
 
-    console.log("📊 CHART DATA:", data);
+      this.transactions = data || [];
 
-    this.transactions = data;
-
-    // ✅ SUCCESS COUNT
-    const success =
-      data.filter(
-        (t: any) =>
-          t.status === 'SUCCESS'
+      // ✅ SUCCESS COUNT
+      const success = this.transactions.filter(
+        (t: any) => t.status === 'SUCCESS'
       ).length;
 
-    // ✅ BLOCKED COUNT
-    const blocked =
-      data.filter(
-        (t: any) =>
-          t.status === 'BLOCKED'
+      // ✅ BLOCKED COUNT
+      const blocked = this.transactions.filter(
+        (t: any) => t.status === 'BLOCKED'
       ).length;
 
-    // 🥧 UPDATE PIE CHART
-    this.pieChartData = {
-      labels: ['Success', 'Blocked'],
-      datasets: [
-        {
-          data: [success, blocked]
-        }
-      ]
-    };
+      // 🥧 UPDATE PIE CHART (create a new reference to trigger change detection)
+      this.pieChartData = {
+        labels: ['Success', 'Blocked'],
+        datasets: [
+          {
+            data: [success, blocked]
+          }
+        ]
+      };
 
-    // 📊 LAST 7 TRANSACTIONS
-    const lastTransactions =
-      data.slice(-7);
+      // 📊 LAST 7 TRANSACTIONS
+      const lastTransactions = this.transactions.slice(-7);
 
-    this.barChartData = {
-      labels:
-        lastTransactions.map(
-          (t: any) =>
-            'TX ' + t.id
-        ),
+      this.barChartData = {
+        labels: lastTransactions.map((t: any) => 'TX ' + t.id),
+        datasets: [
+          {
+            data: lastTransactions.map((t: any) => t.amount),
+            label: 'Transactions'
+          }
+        ]
+      };
 
-      datasets: [
-        {
-          data:
-            lastTransactions.map(
-              (t: any) =>
-                t.amount
-            ),
-
-          label: 'Transactions'
-        }
-      ]
-    };
-
-    console.log(
-      "🥧 PIE:",
-      this.pieChartData
-    );
-
-    console.log(
-      "📊 BAR:",
-      this.barChartData
-    );
+      this.cdr.detectChanges(); // Force Angular to update UI
+    } catch (error) {
+      console.error("❌ Error updating chart data:", error);
+    }
   }
 }

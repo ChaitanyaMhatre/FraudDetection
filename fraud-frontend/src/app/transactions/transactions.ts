@@ -1,20 +1,12 @@
 import {
-  ChangeDetectorRef
-} from '@angular/core';
-
-import {
+  ChangeDetectorRef,
   Component,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
-
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  HttpClient
-} from '@angular/common/http';
-
+import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { TransactionService } from '../services/transaction.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -24,10 +16,11 @@ import * as XLSX from 'xlsx';
   templateUrl: './transactions.html',
   styleUrls: ['./transactions.css']
 })
-export class TransactionsComponent
-implements OnInit {
+export class TransactionsComponent implements OnInit, OnDestroy {
 
   transactions: any[] = [];
+  private sub: Subscription | null = null;
+  private lastDataHash = '';
 
   total = 0;
   success = 0;
@@ -35,101 +28,53 @@ implements OnInit {
   blocked = 0;
 
   constructor(
-    private http: HttpClient,
+    private transactionService: TransactionService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-
-    this.loadTransactions();
-
-    setInterval(() => {
-
-      this.loadTransactions();
-
-    }, 3000);
-  }
-
-  loadTransactions() {
-
-    console.log("🚀 METHOD STARTED");
-
-    this.http.get<any[]>(
-      'http://localhost:8080/api/transactions/all'
-    ).subscribe({
-
+    this.sub = this.transactionService.transactions$.subscribe({
       next: (data) => {
-
-        console.log("✅ RESPONSE RECEIVED");
-
-        console.log(data);
-
         try {
+          const dataStr = JSON.stringify(data || []);
+          if (dataStr === this.lastDataHash) {
+            return;
+          }
+          this.lastDataHash = dataStr;
 
           this.transactions = data || [];
+          this.total = this.transactions.length;
+
+          this.success = this.transactions.filter(
+            t => t.status === 'SUCCESS'
+          ).length;
+
+          this.suspicious = this.transactions.filter(
+            t => t.status === 'SUSPICIOUS'
+          ).length;
+
+          this.blocked = this.transactions.filter(
+            t => t.status === 'BLOCKED'
+          ).length;
+
           this.cdr.detectChanges();
-
-          console.log(
-            "🔥 ASSIGNED:",
-            this.transactions
-          );
-
-          this.total =
-            this.transactions.length;
-
-          this.success =
-            this.transactions.filter(
-              t => t.status === 'SUCCESS'
-            ).length;
-
-          this.suspicious =
-            this.transactions.filter(
-              t => t.status === 'SUSPICIOUS'
-            ).length;
-
-          this.blocked =
-            this.transactions.filter(
-              t => t.status === 'BLOCKED'
-            ).length;
-
-        } catch(e) {
-
-          console.error(
-            "❌ FILTER ERROR:",
-            e
-          );
+        } catch (e) {
+          console.error("❌ FILTER ERROR:", e);
         }
-      },
-
-      error: (err) => {
-
-        console.error(
-          "❌ HTTP ERROR:",
-          err
-        );
       }
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
   exportToExcel() {
-
-    const worksheet =
-      XLSX.utils.json_to_sheet(
-        this.transactions
-      );
-
-    const workbook =
-      XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      'Transactions'
-    );
-
-    XLSX.writeFile(
-      workbook,
-      'transactions.xlsx'
-    );
+    const worksheet = XLSX.utils.json_to_sheet(this.transactions);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Transactions');
+    XLSX.writeFile(workbook, 'transactions.xlsx');
   }
 }

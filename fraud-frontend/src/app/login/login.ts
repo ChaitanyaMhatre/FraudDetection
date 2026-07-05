@@ -27,41 +27,69 @@ from '../services/auth.service';
 export class LoginComponent {
 
   username = '';
-
   password = '';
-
   errorMessage = '';
+  successMessage = '';
+  loading = false;
+
+  // 📝 SIGNUP FIELDS
+  isSignupMode = false;
+  name = '';
+  email = '';
 
   constructor(
     public authService: AuthService
   ) {}
 
+  toggleMode() {
+    this.isSignupMode = !this.isSignupMode;
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
   login() {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.loading = true;
 
-    const success =
-      this.authService.login(
-        this.username,
-        this.password
-      );
+    this.authService.login(this.username, this.password).subscribe({
+      next: (res) => {
+        this.loading = false;
+        location.reload();
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error(err);
+        this.errorMessage = err.error?.message || 'Invalid credentials';
+      }
+    });
+  }
 
-    if (success) {
+  register() {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.loading = true;
 
-      console.log(
-        "✅ LOGIN SUCCESS"
-      );
+    const userData = {
+      username: this.username,
+      password: this.password,
+      name: this.name,
+      email: this.email
+    };
 
-      this.errorMessage = '';
-
-      location.reload();
-
-    } else {
-
-      console.log(
-        "❌ LOGIN FAILED"
-      );
-
-      this.errorMessage =
-        'Invalid credentials';
-    }
+    this.authService.register(userData).subscribe({
+      next: (res: any) => {
+        this.loading = false;
+        this.successMessage = 'Registration successful! A verification email has been sent. Please check your inbox and verify your email before logging in.';
+        this.isSignupMode = false;
+        this.name = '';
+        this.email = '';
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error(err);
+        this.errorMessage = err.error?.message || 'Registration failed';
+      }
+    });
   }
 }

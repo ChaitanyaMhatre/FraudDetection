@@ -1,36 +1,705 @@
-.user-dashboard {
-
-  width: 400px;
-
-  margin: 40px auto;
-
+.gpay-container {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 24px;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
   display: flex;
-
   flex-direction: column;
-
-  gap: 15px;
+  gap: 28px;
 }
 
-input {
-
-  padding: 12px;
-
-  border-radius: 8px;
-
-  border: 1px solid #ccc;
+/* 👤 HEADER SECTION */
+.gpay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 16px;
 }
 
-button {
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  padding: 12px;
-
-  background: #2563eb;
-
+.avatar-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
 
+.profile-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.upi-handle {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.logout-icon-btn {
+  background: none;
   border: none;
-
-  border-radius: 8px;
-
+  color: #64748b;
   cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-icon-btn:hover {
+  background: #f1f5f9;
+  color: #dc3545;
+}
+
+/* 💳 BALANCE CARD */
+.balance-card {
+  position: relative;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(26, 115, 232, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.balance-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.balance-content {
+  padding: 28px;
+  position: relative;
+  z-index: 2;
+}
+
+.balance-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+
+.balance-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.balance-row h2 {
+  font-family: var(--font-title);
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.toggle-balance-btn {
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.toggle-balance-btn:hover {
+  opacity: 1;
+}
+
+.card-number {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* 📣 PROMO BANNER */
+.promo-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background-color: var(--gpay-blue-light);
+  border: 1px solid rgba(26, 115, 232, 0.15);
+  border-radius: 16px;
+}
+
+.promo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gpay-blue);
+  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.1);
+  flex-shrink: 0;
+}
+
+.promo-text h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.promo-text p {
+  font-size: 12.5px;
+  color: var(--text-light);
+}
+
+/* 🎛 SERVICES GRID */
+.services-section h4,
+.pay-section h4,
+.history-section h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.service-item:hover .icon-circle {
+  transform: scale(1.08);
+}
+
+.service-item span {
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  text-align: center;
+}
+
+/* Service Colors */
+.bg-blue { background-color: #1a73e8; }
+.bg-green { background-color: #0f9d58; }
+.bg-orange { background-color: #f4b400; }
+.bg-purple { background-color: #ab47bc; }
+.bg-teal { background-color: #00acc1; }
+.bg-pink { background-color: #ec407a; }
+.bg-indigo { background-color: #5c6bc0; }
+.bg-cyan { background-color: #26c6da; }
+
+/* 💸 SEND MONEY SECTION */
+.payee-bubbles {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.payee-bubble {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+}
+
+.payee-bubble:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.payee-bubble.selected {
+  background-color: var(--gpay-blue-light);
+  border-color: var(--gpay-blue);
+}
+
+.bubble-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #1a73e8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.payee-bubble span {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.pay-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gpay-input-wrapper {
+  position: relative;
+}
+
+.input-icon-left,
+.currency-symbol {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 20px !important;
+  font-weight: 500;
+}
+
+.currency-symbol {
+  font-family: var(--font-title);
+  font-size: 22px;
+}
+
+.gpay-input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background-color: #f8fafc;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.gpay-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+}
+
+.amount-input {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding-left: 36px;
+}
+
+.gpay-pay-btn {
+  width: 100%;
+  padding: 15px 24px;
+  border-radius: 100px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.gpay-pay-btn:hover {
+  background-color: #1557b0;
+  box-shadow: 0 4px 16px rgba(26, 115, 232, 0.3);
+}
+
+.gpay-pay-btn:active {
+  transform: scale(0.98);
+}
+
+/* Alerts and Messages */
+.status-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #e6f4ea;
+  color: #137333;
+  text-align: left;
+}
+
+.status-msg-icon {
+  font-size: 20px !important;
+  flex-shrink: 0;
+}
+
+.status-msg.error {
+  background-color: #fce8e6;
+  color: #c5221f;
+}
+
+.status-msg.warning {
+  background-color: #fef7e0;
+  color: #b06000;
+}
+
+/* 📜 TRANSACTION FEED STYLE */
+.transactions-chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.tx-bubble-card {
+  max-width: 80%;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bubble-sent {
+  align-self: flex-end;
+  background-color: #e8f0fe;
+  border: 1px solid rgba(26, 115, 232, 0.15);
+  border-bottom-right-radius: 4px;
+}
+
+.bubble-received {
+  align-self: flex-start;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-bottom-left-radius: 4px;
+}
+
+.tx-bubble-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.tx-direction-icon {
+  font-size: 14px !important;
+}
+
+.tx-partner-name {
+  font-size: 12.5px;
+}
+
+.tx-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tx-amount {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tx-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.badge-icon {
+  font-size: 12px !important;
+}
+
+.badge-success { background: #e6f4ea; color: #137333; }
+.badge-suspicious { background: #fef7e0; color: #b06000; }
+.badge-blocked { background: #fce8e6; color: #c5221f; }
+
+.tx-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.tx-action-row {
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.tx-verify-action-btn {
+  background-color: var(--gpay-blue);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s;
+}
+
+.tx-verify-action-btn:hover {
+  background-color: var(--gpay-blue-hover);
+}
+
+.no-activity-view {
+  text-align: center;
+  padding: 40px 20px;
+  color: #94a3b8;
+}
+
+.empty-icon {
+  font-size: 48px !important;
+  margin-bottom: 8px;
+}
+
+/* 🔐 UPI PIN KEYPAD OVERLAY */
+.pin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pin-screen {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.pin-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.secure-badge {
+  font-size: 18px !important;
+  color: var(--gpay-blue);
+}
+
+.pin-tx-summary {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.payee-title {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.pay-amount {
+  font-family: var(--font-title);
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+}
+
+.pin-display {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pin-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  background-color: transparent;
+  transition: all 0.1s ease;
+}
+
+.pin-circle.filled {
+  background-color: #1e293b;
+  border-color: #1e293b;
+  transform: scale(1.15);
+}
+
+.pin-prompt {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #475569;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.pin-subprompt {
+  font-size: 11.5px;
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Keypad Layout */
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 24px;
+}
+
+.key-btn {
+  height: 54px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 20px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+  font-family: inherit;
+}
+
+.key-btn:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.key-btn:active {
+  background-color: #cbd5e1;
+  transform: scale(0.95);
+}
+
+.delete-btn,
+.submit-btn {
+  border-color: transparent;
+  background: transparent;
+}
+
+.delete-btn {
+  color: #ef4444;
+}
+
+.submit-btn {
+  background-color: var(--gpay-blue);
+  color: white;
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.2);
+}
+
+.submit-btn:hover {
+  background-color: var(--gpay-blue-hover);
+}
+
+.pin-cancel-text-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: opacity 0.2s;
+}
+
+.pin-cancel-text-btn:hover {
+  opacity: 0.8;
+  text-decoration: underline;
 }

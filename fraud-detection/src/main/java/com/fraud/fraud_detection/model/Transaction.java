@@ -24,4 +24,7 @@ public class Transaction {
     private String status; // SUCCESS / FAILED / BLOCKED
 
     private LocalDateTime timestamp;
+
+    private Double latitude;
+    private Double longitude;
 }

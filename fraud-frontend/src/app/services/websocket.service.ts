@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Stomp from 'stompjs';
+import { WS_BASE_URL } from '../config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class WebsocketService {
 
   connect(onMessageReceived: (msg: string) => void) {
 
-    const socket = new WebSocket('ws://localhost:8080/ws');
+    const socket = new WebSocket(`${WS_BASE_URL}/ws`);
 
     this.stompClient = Stomp.over(socket);
 

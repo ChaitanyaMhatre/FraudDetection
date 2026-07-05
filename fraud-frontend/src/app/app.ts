@@ -5,6 +5,7 @@ import { AlertsComponent } from './alerts/alerts';
 import { TransactionsComponent } from './transactions/transactions';
 import { ChartsComponent } from './charts/charts';
 import { LoginComponent } from './login/login';
+import { MapComponent } from './map/map';
 
 import { AuthService } from './services/auth.service';
 import { UserDashboardComponent }
@@ -20,7 +21,8 @@ from './user-dashboard/user-dashboard';
     TransactionsComponent,
     ChartsComponent,
     LoginComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    MapComponent
   ],
 
   templateUrl: './app.html',

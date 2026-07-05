@@ -19,10 +19,18 @@ public class OtpVerification {
     private String otp;
 
     private boolean verified;
-
     private LocalDateTime createdAt;
+    private Integer attempts = 0;
 
     // ✅ Getters & Setters
+
+    public Integer getAttempts() {
+        return attempts;
+    }
+
+    public void setAttempts(Integer attempts) {
+        this.attempts = attempts;
+    }
 
     public Long getId() {
         return id;

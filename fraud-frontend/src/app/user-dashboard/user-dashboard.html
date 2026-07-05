@@ -1,41 +1,268 @@
-<p>user-dashboard works!</p>
-<div class="user-dashboard">
+<div class="gpay-container">
+  <!-- 👤 PROFILE HEADER -->
+  <header class="gpay-header">
+    <div class="profile-section">
+      <div class="avatar-circle" [style.background-color]="getAvatarColor(profileName)">
+        {{ getInitials(profileName) }}
+      </div>
+      <div class="profile-info">
+        <h3>{{ profileName }}</h3>
+        <p class="upi-handle">{{ profileUsername }}@okepay</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="logout-icon-btn" (click)="logout()" title="Logout">
+        <span class="material-icons">logout</span>
+      </button>
+    </div>
+  </header>
 
-  <h2>
-    💸 Send Money
-  </h2>
+  <!-- 💳 WALLET BALANCE CARD -->
+  <section class="balance-card">
+    <div class="card-glow"></div>
+    <div class="balance-content">
+      <p class="balance-title">Account Balance</p>
+      <div class="balance-row">
+        <h2>{{ showBalance ? '₹' + (profileBalance | number:'1.2-2') : '₹ ••••••' }}</h2>
+        <button class="toggle-balance-btn" (click)="toggleBalanceVisibility()">
+          <span class="material-icons">{{ showBalance ? 'visibility' : 'visibility_off' }}</span>
+        </button>
+      </div>
+      <p class="card-number">ePay Wallet Active</p>
+    </div>
+  </section>
 
-  <input
-    type="number"
-    placeholder="Sender ID"
-    [(ngModel)]="senderId"
-  />
+  <!-- 📣 HERO PROMO BANNER -->
+  <section class="promo-banner">
+    <div class="promo-icon">
+      <span class="material-icons">shield</span>
+    </div>
+    <div class="promo-text">
+      <h4>AI Shield Protection Enabled</h4>
+      <p>Transactions are analyzed in real-time to block fraudulent transfers instantly.</p>
+    </div>
+  </section>
 
-  <input
-    type="number"
-    placeholder="Receiver ID"
-    [(ngModel)]="receiverId"
-  />
+  <!-- 🎛 SERVICES GRID -->
+  <section class="services-section">
+    <h4>Services</h4>
+    <div class="services-grid">
+      <div class="service-item" (click)="showProgressToast('Scan any QR code')">
+        <div class="icon-circle bg-blue">
+          <span class="material-icons">qr_code_scanner</span>
+        </div>
+        <span>Scan QR</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Pay contacts')">
+        <div class="icon-circle bg-green">
+          <span class="material-icons">contacts</span>
+        </div>
+        <span>Pay Contacts</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Pay phone number')">
+        <div class="icon-circle bg-orange">
+          <span class="material-icons">phone_android</span>
+        </div>
+        <span>Pay Phone</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Bank transfer')">
+        <div class="icon-circle bg-purple">
+          <span class="material-icons">account_balance</span>
+        </div>
+        <span>Bank Transfer</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Pay UPI ID')">
+        <div class="icon-circle bg-teal">
+          <span class="material-icons">alternate_email</span>
+        </div>
+        <span>Pay UPI ID</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Self transfer')">
+        <div class="icon-circle bg-pink">
+          <span class="material-icons">swap_horiz</span>
+        </div>
+        <span>Self Transfer</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Pay bills')">
+        <div class="icon-circle bg-indigo">
+          <span class="material-icons">receipt</span>
+        </div>
+        <span>Pay Bills</span>
+      </div>
+      
+      <div class="service-item" (click)="showProgressToast('Mobile recharge')">
+        <div class="icon-circle bg-cyan">
+          <span class="material-icons">settings_cell</span>
+        </div>
+        <span>Recharge</span>
+      </div>
+    </div>
+  </section>
 
-  <input
-    type="number"
-    placeholder="Amount"
-    [(ngModel)]="amount"
-  />
+  <!-- 💸 SEND MONEY FORM (GPAY STYLE) -->
+  <section class="pay-section">
+    <h4>Send Money</h4>
+    
+    <!-- Quick Select Payees -->
+    <div class="payee-bubbles">
+      <div class="payee-bubble" (click)="selectPayee(1)" [class.selected]="receiverId === 1">
+        <div class="bubble-avatar">A</div>
+        <span>Admin (ID: 1)</span>
+      </div>
+      <div class="payee-bubble" (click)="selectPayee(2)" [class.selected]="receiverId === 2">
+        <div class="bubble-avatar bg-green">U</div>
+        <span>User (ID: 2)</span>
+      </div>
+    </div>
 
-  <button
-    (click)="sendMoney()">
+    <div class="pay-form">
+      <div class="gpay-input-wrapper">
+        <span class="material-icons input-icon-left">person_pin</span>
+        <input
+          type="number"
+          placeholder="Recipient User ID"
+          [(ngModel)]="receiverId"
+          class="gpay-input"
+        />
+      </div>
 
-    Send Money
+      <div class="gpay-input-wrapper">
+        <span class="currency-symbol">₹</span>
+        <input
+          type="number"
+          placeholder="0.00"
+          [(ngModel)]="amount"
+          class="gpay-input amount-input"
+        />
+      </div>
 
-  </button>
+      <button class="gpay-pay-btn" (click)="sendMoney()" [disabled]="loadingPay">
+        <span>{{ loadingPay ? 'Processing Payment...' : 'Proceed to Pay' }}</span>
+        <span class="material-icons" *ngIf="!loadingPay">arrow_forward</span>
+      </button>
 
-  <div *ngIf="message">
+      <!-- 🚨 Alert message -->
+      <div class="status-msg" *ngIf="message" [class.error]="message.startsWith('❌')" [class.warning]="message.startsWith('⚠️')">
+        <span class="material-icons status-msg-icon">
+          {{ message.startsWith('✅') ? 'check_circle' : (message.startsWith('⚠️') ? 'warning' : 'error') }}
+        </span>
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </section>
 
-    <h3>
-      {{ message }}
-    </h3>
+  <!-- 📜 TRANSACTION HISTORY -->
+  <section class="history-section">
+    <h4>Recent Activity</h4>
+    <div class="transactions-chat-list">
+      <div *ngFor="let tx of userTransactions" class="tx-bubble-card" [class.bubble-sent]="tx.senderId === currentUserId" [class.bubble-received]="tx.receiverId === currentUserId">
+        <div class="tx-bubble-header">
+          <span class="material-icons tx-direction-icon">
+            {{ tx.senderId === currentUserId ? 'call_made' : 'call_received' }}
+          </span>
+          <span class="tx-partner-name">
+            {{ tx.senderId === currentUserId ? 'To User ID: ' + tx.receiverId : 'From User ID: ' + tx.senderId }}
+          </span>
+        </div>
+        
+        <div class="tx-bubble-body">
+          <div class="tx-amount-row">
+            <span class="tx-amount">₹{{ tx.amount | number:'1.2-2' }}</span>
+            
+            <!-- Dynamic Badges -->
+            <span class="tx-status-badge badge-success" *ngIf="tx.status === 'SUCCESS'">
+              <span class="material-icons badge-icon">check</span>Completed
+            </span>
+            <span class="tx-status-badge badge-suspicious" *ngIf="tx.status === 'SUSPICIOUS'">
+              <span class="material-icons badge-icon">hourglass_empty</span>Verification Required
+            </span>
+            <span class="tx-status-badge badge-blocked" *ngIf="tx.status === 'BLOCKED'">
+              <span class="material-icons badge-icon">block</span>Blocked
+            </span>
+          </div>
+          
+          <div class="tx-footer">
+            <span class="tx-time">{{ tx.timestamp | date:'shortTime' }} • {{ tx.timestamp | date:'dd MMM' }}</span>
+            <span class="tx-id-badge">ID: #{{ tx.id }}</span>
+          </div>
+        </div>
+        
+        <!-- Live Action trigger for suspicious transactions -->
+        <div class="tx-action-row" *ngIf="tx.status === 'SUSPICIOUS' && tx.senderId === currentUserId">
+          <button class="tx-verify-action-btn" (click)="openExistingOtp(tx.id)">
+            <span class="material-icons">security</span>Verify PIN
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="userTransactions.length === 0" class="no-activity-view">
+        <span class="material-icons empty-icon">payment</span>
+        <p>No revent payment history found.</p>
+      </div>
+    </div>
+  </section>
 
+  <!-- 🔐 UPI PIN KEYPAD OVERLAY (OTP MODAL) -->
+  <div class="pin-overlay" *ngIf="showOtpModal">
+    <div class="pin-screen">
+      <!-- Top Header -->
+      <div class="pin-header">
+        <span class="material-icons secure-badge">lock</span>
+        <span>Secure UPI PIN Entry</span>
+      </div>
+
+      <!-- Tx Summary -->
+      <div class="pin-tx-summary">
+        <p class="payee-title">Paying Receiver ID: {{ receiverId }}</p>
+        <h2 class="pay-amount">₹{{ amount | number:'1.2-2' }}</h2>
+      </div>
+
+      <!-- PIN Input Circles -->
+      <div class="pin-display">
+        <div class="pin-circle" *ngFor="let dot of [0, 1, 2, 3, 4, 5]" [class.filled]="otpCode.length > dot"></div>
+      </div>
+      
+      <p class="pin-prompt">Enter the 6-digit OTP code sent to your email</p>
+      <p class="pin-subprompt">(Simulated OTP is also printed in your server console log)</p>
+
+      <!-- Keypad Grid -->
+      <div class="pin-keypad">
+        <button class="key-btn" (click)="typePinNumber('1')">1</button>
+        <button class="key-btn" (click)="typePinNumber('2')">2</button>
+        <button class="key-btn" (click)="typePinNumber('3')">3</button>
+        
+        <button class="key-btn" (click)="typePinNumber('4')">4</button>
+        <button class="key-btn" (click)="typePinNumber('5')">5</button>
+        <button class="key-btn" (click)="typePinNumber('6')">6</button>
+        
+        <button class="key-btn" (click)="typePinNumber('7')">7</button>
+        <button class="key-btn" (click)="typePinNumber('8')">8</button>
+        <button class="key-btn" (click)="typePinNumber('9')">9</button>
+        
+        <button class="key-btn delete-btn" (click)="deletePinNumber()" title="Delete">
+          <span class="material-icons">backspace</span>
+        </button>
+        <button class="key-btn" (click)="typePinNumber('0')">0</button>
+        <button class="key-btn submit-btn" (click)="verifyOtp()" title="Submit PIN">
+          <span class="material-icons">check</span>
+        </button>
+      </div>
+      
+      <div class="pin-footer">
+        <button class="pin-cancel-text-btn" (click)="closeOtpModal()">Cancel Payment</button>
+      </div>
+    </div>
   </div>
 
+  <!-- 📣 TOAST NOTIFICATION CONTAINER -->
+  <div class="gpay-toast" [class.show]="showToast">
+    <span class="material-icons">info</span>
+    <span>{{ toastMessage }}</span>
+  </div>
 </div>

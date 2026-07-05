@@ -8,8 +8,11 @@ import {
 } from '@angular/router';
 
 import {
-  provideHttpClient
+  provideHttpClient,
+  withInterceptors
 } from '@angular/common/http';
+
+import { authInterceptor } from './services/auth.interceptor';
 
 import { routes }
 from './app.routes';
@@ -24,7 +27,7 @@ ApplicationConfig = {
     provideRouter(routes),
 
     // ✅ VERY IMPORTANT
-    provideHttpClient()
+    provideHttpClient(withInterceptors([authInterceptor]))
 
   ]
 };
