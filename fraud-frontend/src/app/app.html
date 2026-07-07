@@ -67,7 +67,123 @@
   <div class="admin-container">
     
     <!-- Tab 1: Dashboard -->
-    <div *ngIf="activeTab === 'dashboard'" class="tab-content fade-in">
+    <div *ngIf="activeTab === 'dashboard'" class="tab-content fade-in" style="display: flex; flex-direction: column; gap: 32px;">
+      
+      <!-- KPI Cards Grid -->
+      <div class="kpi-grid">
+        <!-- Card 1: Total Users -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper blue">
+            <span class="material-icons kpi-icon">people</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Total Users</span>
+            <span class="kpi-value">{{ totalUsers }}</span>
+            <span class="kpi-subtitle">Active accounts</span>
+          </div>
+          <div class="kpi-growth positive">
+            <span class="material-icons growth-icon">trending_up</span>
+            <span>+3 new</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Total Transactions -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper blue-light">
+            <span class="material-icons kpi-icon">receipt_long</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Total Transactions</span>
+            <span class="kpi-value">{{ totalTransactions }}</span>
+            <span class="kpi-subtitle">Processed logs</span>
+          </div>
+          <div class="kpi-growth positive">
+            <span class="material-icons growth-icon">trending_up</span>
+            <span>+12%</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Successful Transactions -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper green">
+            <span class="material-icons kpi-icon">check_circle</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Successful</span>
+            <span class="kpi-value">{{ successfulTransactions }}</span>
+            <span class="kpi-subtitle">Cleared payments</span>
+          </div>
+          <div class="kpi-growth positive">
+            <span class="material-icons growth-icon">trending_up</span>
+            <span>+95.4%</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Suspicious Transactions -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper yellow">
+            <span class="material-icons kpi-icon">hourglass_empty</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Suspicious</span>
+            <span class="kpi-value">{{ suspiciousTransactions }}</span>
+            <span class="kpi-subtitle">Pending verification</span>
+          </div>
+          <div class="kpi-growth warning">
+            <span class="material-icons growth-icon">warning</span>
+            <span>Watch list</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Blocked Transactions -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper red">
+            <span class="material-icons kpi-icon">block</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Blocked</span>
+            <span class="kpi-value">{{ blockedTransactions }}</span>
+            <span class="kpi-subtitle">Prevented fraud</span>
+          </div>
+          <div class="kpi-growth danger">
+            <span class="material-icons growth-icon">gpp_bad</span>
+            <span>Stopped</span>
+          </div>
+        </div>
+
+        <!-- Card 6: Fraud Rate -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper red-light">
+            <span class="material-icons kpi-icon">analytics</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Fraud Rate</span>
+            <span class="kpi-value">{{ fraudRate }}%</span>
+            <span class="kpi-subtitle">Of total volume</span>
+          </div>
+          <div class="kpi-growth" [class.positive]="fraudRate < 2.0" [class.danger]="fraudRate >= 2.0">
+            <span class="material-icons growth-icon">{{ fraudRate < 2.0 ? 'security' : 'error' }}</span>
+            <span>{{ fraudRate < 2.0 ? 'Safe limit' : 'High risk' }}</span>
+          </div>
+        </div>
+
+        <!-- Card 7: Transaction Volume -->
+        <div class="kpi-card">
+          <div class="kpi-icon-wrapper green-light">
+            <span class="material-icons kpi-icon">account_balance_wallet</span>
+          </div>
+          <div class="kpi-details">
+            <span class="kpi-title">Tx Volume</span>
+            <span class="kpi-value">₹{{ transactionVolume | number:'1.0-2' }}</span>
+            <span class="kpi-subtitle">Settled volume</span>
+          </div>
+          <div class="kpi-growth positive">
+            <span class="material-icons growth-icon">trending_up</span>
+            <span>+18.4K</span>
+          </div>
+        </div>
+      </div>
+
       <div class="admin-dashboard-grid">
         <div class="grid-left-col">
           <app-map></app-map>
@@ -77,6 +193,129 @@
         </div>
       </div>
       <app-charts></app-charts>
+
+      <!-- Recent Transactions + Timeline Layout -->
+      <div class="dashboard-bottom-grid">
+        
+        <!-- Left: Recent Transactions Card -->
+        <div class="premium-card recent-tx-card">
+          <div class="card-header-with-action">
+            <div class="title-group">
+              <span class="material-icons title-icon">history</span>
+              <h3>Recent Activity</h3>
+            </div>
+            <button class="premium-button premium-button-secondary" style="padding: 6px 12px; font-size: 12.5px;" (click)="selectTab('transactions')">
+              <span>View All</span>
+              <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
+            </button>
+          </div>
+          
+          <div class="table-responsive" style="margin-top: 16px; overflow-x: auto;">
+            <table class="recent-tx-table">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Receiver</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let tx of transactions.slice(0, 5)">
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar-cell-sm">S</div>
+                      <span>{{ tx.senderUsername || tx.sender?.username || 'N/A' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar-cell-sm blue">R</div>
+                      <span>{{ tx.receiverUsername || tx.receiver?.username || 'N/A' }}</span>
+                    </div>
+                  </td>
+                  <td><span class="amount-val">₹{{ tx.amount | number:'1.2-2' }}</span></td>
+                  <td>
+                    <span class="premium-badge" 
+                          [class.premium-badge-success]="tx.status === 'SUCCESS'"
+                          [class.premium-badge-suspicious]="tx.status === 'SUSPICIOUS'"
+                          [class.premium-badge-blocked]="tx.status === 'BLOCKED'">
+                      {{ tx.status }}
+                    </span>
+                  </td>
+                </tr>
+                <tr *ngIf="transactions.length === 0">
+                  <td colspan="4" class="empty-table-cell" style="text-align: center; padding: 24px; color: var(--text-lightest);">
+                    <span class="material-icons">receipt</span>
+                    <p>No transaction history recorded yet.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Audit Timeline Card -->
+        <div class="premium-card timeline-card">
+          <div class="title-group">
+            <span class="material-icons title-icon">timeline</span>
+            <h3>Risk Assessment Timeline</h3>
+          </div>
+          
+          <div class="audit-timeline-flow" style="margin-top: 24px;">
+            <div class="timeline-step active">
+              <div class="step-indicator">
+                <span class="material-icons step-icon">add_circle</span>
+              </div>
+              <div class="step-content">
+                <span class="step-title">Transaction Initiated</span>
+                <span class="step-desc">Transfer parameters parsed by Gateway</span>
+              </div>
+            </div>
+            
+            <div class="timeline-step active">
+              <div class="step-indicator">
+                <span class="material-icons step-icon">psychology</span>
+              </div>
+              <div class="step-content">
+                <span class="step-title">AI Features Calculation</span>
+                <span class="step-desc">Evaluates frequency & avg transaction values</span>
+              </div>
+            </div>
+
+            <div class="timeline-step active">
+              <div class="step-indicator">
+                <span class="material-icons step-icon">assessment</span>
+              </div>
+              <div class="step-content">
+                <span class="step-title">Risk Scoring</span>
+                <span class="step-desc">Random Forest generates confidence level</span>
+              </div>
+            </div>
+
+            <div class="timeline-step warning">
+              <div class="step-indicator">
+                <span class="material-icons step-icon">mail</span>
+              </div>
+              <div class="step-content">
+                <span class="step-title">Verification (MFA)</span>
+                <span class="step-desc">Hashed OTP dispatched to registered email</span>
+              </div>
+            </div>
+
+            <div class="timeline-step success-flag">
+              <div class="step-indicator">
+                <span class="material-icons step-icon">verified_user</span>
+              </div>
+              <div class="step-content">
+                <span class="step-title">Execution (Settle / Block)</span>
+                <span class="step-desc">Status finalized in core banking ledger</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- Tab 2: Transactions -->
