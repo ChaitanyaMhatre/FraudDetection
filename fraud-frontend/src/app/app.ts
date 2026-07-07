@@ -29,8 +29,13 @@ from './user-dashboard/user-dashboard';
   styleUrls: ['./app.css']
 })
 export class AppComponent {
+  activeTab: string = 'dashboard';
 
   constructor(public authService: AuthService) {}
+
+  selectTab(tab: string) {
+    this.activeTab = tab;
+  }
 
   // ✅ Logout method
   logout() {

@@ -12,33 +12,134 @@
     &&
     authService.getRole() === 'ADMIN'
   "
-  class="admin-container">
+  class="admin-layout">
 
-  <header class="admin-header">
-    <div class="admin-title-group">
-      <span class="material-icons logo-icon" style="color: var(--gpay-blue); font-size: 32px;">shield</span>
-      <h1>Admin Fraud Dashboard</h1>
+  <!-- Sticky Navigation Bar -->
+  <nav class="admin-navbar">
+    <div class="nav-logo-group">
+      <span class="material-icons logo-icon">shield</span>
+      <span class="nav-brand">ePay <span class="brand-sub">Secure</span></span>
     </div>
-    <div class="admin-header-actions">
-      <button class="premium-button premium-button-secondary" (click)="logout()">
-        <span class="material-icons">logout</span>
-        <span>Logout</span>
+    
+    <div class="nav-links">
+      <button class="nav-link-btn" [class.active]="activeTab === 'dashboard'" (click)="selectTab('dashboard')">
+        <span class="material-icons nav-icon">dashboard</span>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'transactions'" (click)="selectTab('transactions')">
+        <span class="material-icons nav-icon">receipt_long</span>
+        <span>Transactions</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'fraud-cases'" (click)="selectTab('fraud-cases')">
+        <span class="material-icons nav-icon">gpp_maybe</span>
+        <span>Fraud Cases</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'users'" (click)="selectTab('users')">
+        <span class="material-icons nav-icon">people</span>
+        <span>Users</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'reports'" (click)="selectTab('reports')">
+        <span class="material-icons nav-icon">assessment</span>
+        <span>Reports</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'settings'" (click)="selectTab('settings')">
+        <span class="material-icons nav-icon">settings</span>
+        <span>Settings</span>
+      </button>
+      <button class="nav-link-btn" [class.active]="activeTab === 'profile'" (click)="selectTab('profile')">
+        <span class="material-icons nav-icon">account_circle</span>
+        <span>Profile</span>
       </button>
     </div>
-  </header>
 
-  <div class="admin-dashboard-grid">
-    <div class="grid-left-col">
-      <app-map></app-map>
+    <div class="nav-user-actions">
+      <div class="admin-profile-badge">
+        <div class="avatar-sm">A</div>
+        <span class="admin-name">Admin</span>
+      </div>
+      <button class="logout-icon-btn" (click)="logout()" title="Logout">
+        <span class="material-icons">logout</span>
+      </button>
     </div>
-    <div class="grid-right-col">
-      <app-alerts></app-alerts>
+  </nav>
+
+  <!-- Content Container -->
+  <div class="admin-container">
+    
+    <!-- Tab 1: Dashboard -->
+    <div *ngIf="activeTab === 'dashboard'" class="tab-content fade-in">
+      <div class="admin-dashboard-grid">
+        <div class="grid-left-col">
+          <app-map></app-map>
+        </div>
+        <div class="grid-right-col">
+          <app-alerts></app-alerts>
+        </div>
+      </div>
+      <app-charts></app-charts>
     </div>
+
+    <!-- Tab 2: Transactions -->
+    <div *ngIf="activeTab === 'transactions'" class="tab-content fade-in">
+      <app-transactions></app-transactions>
+    </div>
+
+    <!-- Tab 3: Fraud Cases -->
+    <div *ngIf="activeTab === 'fraud-cases'" class="tab-content fade-in">
+      <div class="premium-card placeholder-card">
+        <div class="placeholder-content">
+          <span class="material-icons placeholder-icon" style="color: var(--gpay-red);">gpp_maybe</span>
+          <h3>Fraud Cases Hub</h3>
+          <p>Analyzing transactions flagged as SUSPICIOUS or BLOCKED by our Random Forest ML Model.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Users Placeholder -->
+    <div *ngIf="activeTab === 'users'" class="tab-content fade-in">
+      <div class="premium-card placeholder-card">
+        <div class="placeholder-content">
+          <span class="material-icons placeholder-icon" style="color: var(--gpay-blue);">people</span>
+          <h3>Users & Access Management</h3>
+          <p>View registered clients, wallet balances, and risk statuses.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 5: Reports Placeholder -->
+    <div *ngIf="activeTab === 'reports'" class="tab-content fade-in">
+      <div class="premium-card placeholder-card">
+        <div class="placeholder-content">
+          <span class="material-icons placeholder-icon" style="color: var(--gpay-green);">assessment</span>
+          <h3>Analytics Reports</h3>
+          <p>Export general transactions ledger and periodic audit data.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 6: Settings Placeholder -->
+    <div *ngIf="activeTab === 'settings'" class="tab-content fade-in">
+      <div class="premium-card placeholder-card">
+        <div class="placeholder-content">
+          <span class="material-icons placeholder-icon" style="color: var(--gpay-yellow);">settings</span>
+          <h3>Security Settings</h3>
+          <p>Configure model decision boundaries, OTP limit counts, and system notifications.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 7: Profile Placeholder -->
+    <div *ngIf="activeTab === 'profile'" class="tab-content fade-in">
+      <div class="premium-card placeholder-card">
+        <div class="placeholder-content">
+          <span class="material-icons placeholder-icon">account_circle</span>
+          <h3>System Profile</h3>
+          <p>Admin user credentials and active security keys.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-  <app-transactions></app-transactions>
-
-  <app-charts></app-charts>
 
 </div>
 
